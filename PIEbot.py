@@ -118,18 +118,19 @@ if __name__ == '__main__':
     p = PIEbot(config)
     root_id = p.random_root_id()
 
-    # simple tweet:    
-    # word_entry = p.random_words_of_root_id(root_id)[0]
-    # tweet = p.write_basic_tweet(word_entry)
-    
-    # or three langs:
-    word_entries = p.random_words_of_root_id(root_id, 3)
-    tweet = p.write_tweet_with_flags(word_entries)
+    tweet_type = random.choice(['single', 'three_flags'])
+    if tweet_type == 'single':
+        word_entry = p.random_words_of_root_id(root_id)[0]
+        tweet = p.write_basic_tweet(word_entry)
+    elif tweet_type == 'three_flags':
+        word_entries = p.random_words_of_root_id(root_id, 3)
+        tweet = p.write_tweet_with_flags(word_entries)
 
     print(tweet)
     print("{} chars".format(len(tweet)))
-
-    status = p.post_tweet(tweet)
-    print("@{}: {}".format(status.user.screen_name, status.text))
+    inp = input('post tweet? [y/N]')
+    if inp == 'y':
+        status = p.post_tweet(tweet)
+        print("@{}: {}".format(status.user.screen_name, status.text))
 
     p.close()
